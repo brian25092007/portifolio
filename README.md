@@ -9,7 +9,9 @@ Descrição Do Projeto
 
 O projeto web app é um website que tem a função
 do usuário poder fazer login e cadastro junto
-com a opção de troca de senha e validação de senha
+com a opção de troca de senha e validação de senha,
+tendo uma perssonalização moderna e facíl de se 
+utilizar
 
 Técnologias utilizadas
 
