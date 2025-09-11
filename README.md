@@ -15,5 +15,5 @@ utilizar
 
 Técnologias utilizadas
 
-. Front End
-. Back end
+. Front End : css, vs code
+. Back end : php, mysql
