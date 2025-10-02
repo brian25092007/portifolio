@@ -1,20 +1,25 @@
 <?php
-$login = $_POST['login'];
-$senha = $_POST['senha'];
-$nome  = $_POST['nome'];
+    session_start();
+    if(isset($_POST['login'])){
 
-include('conexao_db.php');
+        include_once('conexao_db.php');
 
-$sql = "INSERT INTO usuarios (login, senha, nome, tipo, quant_acesso, statuts) 
-        VALUES ('$login', '$senha', '$nome', 1, 0, 'A')";
+        $email = $_POST['login'];
+        $password = $_POST['senha'];
+        $name = $_POST['nome'];
+        $number = $_POST['telefone'];
 
-if (mysqli_query($conexao, $sql)) {
-    echo "Usuário cadastrado com sucesso!";
-} else {
-    echo "Erro: " . mysqli_error($conexao);
-}
+        if (mysqli_num_rows(mysqli_query($conexao, "SELECT * FROM usuarios WHERE login='$email'")) > 0) {
+            echo "<script>alert('Email already registered. Please use a different email.');</script>";
+        } else {
+            $result = mysqli_query($conexao, "INSERT INTO usuarios(login, senha, nome, quant_acesso) VALUES('$email', '$password', '$name', 0)");
+        }
+        header ('Location: login.php');
+         $_SESSION['email'] = $email;
+         $_SESSION['senha'] = $senha;
+         $_SESSION['login'] = $login;
+         $_SESSION['telefone'] = $telefone;
+         $_SESSION['nome'] = $nome;
+    }
 
-header('Location: login.php');
-
-mysqli_close($conexao);
 ?>

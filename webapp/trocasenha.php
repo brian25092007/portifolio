@@ -1,18 +1,31 @@
 <?php
+    include_once('conexao_db.php');
+    session_start();
+
     if(isset($_POST['submit'])){
-        include_once('conexao_db_php.php');
 
-        $senha_atual = $_POST['senha_atual'];
-        $nova_senha = $_POST['nova_senha'];
-        $confirma_senha = $_POST['confirma_senha'];
+        $confirm_password = $_POST['confirma_senha'];
+        $password = $_POST['senha_atual'];
+        $new_password = $_POST['nova_senha'];
 
-        if($nova_senha == $confirma_senha) {
-            $result = mysqli($conexao,'UPDATE senha WHERE');
+        if($new_password==$confirm_password && $password == $_SESSION['senha']){
+            $result = 'UPDATE usuarios SET senha="'.$new_password.'" WHERE login="'.$_SESSION['usuario'].'"';
+            if(mysqli_query($conexao, $result)){
+                echo "<script>alert('Password updated successfully');</script>";
+                $_SESSION['senha'] = $new_password;
+            } else {
+                echo "<script>alert('Error updating password');</script>";
+            }
         }
-
-
+        else{
+            echo $password;
+            echo $_SESSION['senha'];
+            echo '';
+            echo $new_password;
+            echo $confirm_password;
+            echo "<script>alert('Passwords do not match');</script>";
+        }
     }
-
 ?>
 
 <!DOCTYPE html>
@@ -90,50 +103,14 @@
 </head>
 <body>
 
-<?php
-$msg = "";
-$msg_class = "";
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $senha_atual_correta = "senha123"; // senha fixa de teste
-
-    $senha_atual = $_POST['senha_atual'] ?? '';
-    $nova_senha = $_POST['nova_senha'] ?? '';
-    $confirma_senha = $_POST['confirma_senha'] ?? '';
-
-    if (!$senha_atual || !$nova_senha || !$confirma_senha) {
-        $msg = "Por favor, preencha todos os campos.";
-        $msg_class = "error";
-    } elseif ($senha_atual !== $senha_atual_correta) {
-        $msg = "Senha atual incorreta.";
-        $msg_class = "error";
-    } elseif ($nova_senha !== $confirma_senha) {
-        $msg = "A nova senha e a confirmação não coincidem.";
-        $msg_class = "error";
-    } elseif (strlen($nova_senha) < 6) {
-        $msg = "A nova senha deve ter pelo menos 6 caracteres.";
-        $msg_class = "error";
-    } else {
-        $msg = "Senha alterada com sucesso!";
-        $msg_class = "success";
-        $_POST = [];
-    }
-}
-?>
-
-<?php if ($msg): ?>
-    <div class="msg <?= $msg_class ?>">
-        <?= htmlspecialchars($msg) ?>
-    </div>
-<?php endif; ?>
 
 <div class="form-container">
     <h2>Trocar Senha</h2>
-    <form method="POST" action="">
+    <form method="POST" action="trocasenha.php">
         <input type="password" name="senha_atual" placeholder="Senha Atual" required />
         <input type="password" name="nova_senha" placeholder="Nova Senha" required />
         <input type="password" name="confirma_senha" placeholder="Confirmar Nova Senha" required />
-        <button type="submit">Alterar Senha</button>
+        <button type="submit" name="submit">Alterar Senha</button>
     </form>
 </div>
 
