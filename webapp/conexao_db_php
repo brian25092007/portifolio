@@ -1,0 +1,18 @@
+<?php 
+    $localhost = 'localhost';
+    $username = 'root';
+    $password = '';
+    $database = 'bd_crud_php';
+
+    $conexao = new mysqli($localhost,$username,$password,$database);
+
+    if($conexao->connect_error){
+        echo 'falha na conexao';
+    }
+
+    echo 'conectado com sucesso';
+
+    mysqli_select_db($conexao, $database);
+
+    $conexao ->close();
+?>
